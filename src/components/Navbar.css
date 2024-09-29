@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+.navbar-cont {
+    width: 100%;
+    height: 65px;
+    background-color: rgba(255, 255, 255, 0);
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+.navbar-buttons-cont {
+    width: fit-content;
+    display: flex;
+    gap: 50px;
+    padding: 30px;
+}
+
+.navbar-logo {
+    width: fit-content;
+    display: flex;
+    justify-content: left;
+    gap: 50px;
+    padding: 30px;
+}
+
+.navbar-logo {
+    width: 30px;
+    height: auto;
+    margin-right: 20px;
+    justify-content: left;
+}
+
+button {
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 300;
+    font-style: normal;
+    color: var(--red);
+    min-width: 70px;
+    font-size: 12px;
+    padding: 10px;
+    height: 40px;
+    border-radius: 20px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0);
+    cursor: pointer;
+}
+
+button:hover {
+    /* background-color: rgb(176, 131, 139); */
+    color: black;
+    transition: 200ms;
+}
+
+.active {
+    color: #6B0000;
+    /* background-color: rgb(177, 177, 230); */
+}
+
+.active:hover {
+    /* background-color: rgb(177, 177, 230); */
+    color: black;
+}
