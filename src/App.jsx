@@ -1,10 +1,4 @@
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
-import Navbar from "./components/Navbar.jsx"
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import Page1 from "./pages/Page1.jsx"
-import Page2 from "./pages/Page2.jsx"
 import Checkbox from './components/Checkbox';
 
 import React, { useState } from 'react';
@@ -227,13 +221,16 @@ const Calendar = () => {
     <div className="app-container">
       <div className="calendar">
         <div className="calendar-header">
-          <button onClick={goToPreviousMonth}>&lt;</button>
-          <h2>{monthNames[month]} {year}</h2>
-          <button onClick={goToNextMonth}>&gt;</button>
+        <h2>{monthNames[month]} {year}</h2>
+          <div className="calendar-header-button-section">
+            <button id="arrow-button" onClick={goToPreviousMonth}>&lt;</button>
+            <button id="today-button" onClick={goToToday}>Today</button>
+            <button id="arrow-button" onClick={goToNextMonth}>&gt;</button>
+          </div>
         </div>
-        <div className="today-button">
+        {/* <div className="today-button">
           <button onClick={goToToday}>Today</button>
-        </div>
+        </div> */}
         <div className="calendar-body">
           <div className="calendar-weekdays">
             {weekdays.map((weekday) => (
