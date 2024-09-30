@@ -150,8 +150,6 @@ body {
   display: flex;
   height: 100%;
   flex-grow : 1;
-  justify-content: baseline;
-  align-items: bottom;
 }
 
 .calendar-day input {
@@ -194,6 +192,12 @@ body {
   overflow-wrap: break-word;
   margin-top: 5px;
   border-radius: 3px;
+}
+
+.complete {
+  color: #6B0000;
+  text-decoration: line-through;
+  text-decoration-thickness: 2px; 
 }
 
 .divider {

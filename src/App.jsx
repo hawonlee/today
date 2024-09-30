@@ -14,11 +14,8 @@ const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
-  const [complete, setComplete] = useState([
-    { text: 'Task 1', completed: false },
-    { text: 'Task 2', completed: false },
-    { text: 'Task 3', completed: false },
-  ]);
+  const [taskComplete, setTaskComplete] = useState(false);
+  const [clickedTask, setClickedTask] = useState(null);
   const [checkTasks, setCheckTasks] = useState([
     { checkTask: 'Task 1', completed: false },
     { checkTask: 'Task 2', completed: false },
@@ -26,7 +23,6 @@ const Calendar = () => {
   ]);
   const [calendarTasks, setCalendarTasks] = useState({});
   const [draggedTask, setDraggedTask] = useState(null);
-  const [draggedTaskDay, setDraggedTaskDay] = useState(null);
 
   const [calendarWidth, setCalendarWidth] = useState(50); // in percentage
 
@@ -93,33 +89,42 @@ const Calendar = () => {
     setNewTask(e.target.value);
   };
 
-  const toggleTaskCompletion = (task) => {
-    const updatedComplete = complete.map((t) => 
-      t.text === task.text ? { ...t, completed: !t.completed } : t
-    );
-    setComplete(updatedComplete);
-  };
-
 
   const addTask = (e) => {
     e.preventDefault();
     if (newTask.trim() !== "") {
-
-      
-
       setTasks([...tasks, newTask]);
       setNewTask("");
     }
   };
 
   const onDragStart = (e, task, dayDate = null) => {
+    console.log("onDragStart");
     if (dayDate) {
-      setDraggedTask({task, dayDate: generateDateKey(dayDate)});
+      setDraggedTask({task, complete: false, dayDate: generateDateKey(dayDate)});
     } else {
-      setDraggedTask({task, dayDate: -1});
+      setDraggedTask({task, complete: false, dayDate: -1});
     }
     
-    
+  };
+
+  const onClickTask = (e, task, dateKey) => {
+    setClickedTask({task, dayDate: dateKey});
+  };
+
+  const toggleTaskCompletion = (e, task, dayDate) => {
+    console.log(task.complete);
+    // console.log(dayDate);
+    // const updatedTasks = calendarTasks[dayDate].map((task) =>
+    //   task.dayDate === dayDate ? { ...task, complete: !task.complete } : task
+    // );
+
+    // console.log(task.complete);
+
+    // setCalendarTasks({
+    //   ...calendarTasks,
+    //   [dayDate]: updatedTasks
+    // });
   };
 
   const generateDateKey = (date) => {
@@ -135,7 +140,7 @@ const Calendar = () => {
 
     // If dropping a task from the task manager
     if (draggedTask.dayDate === -1) {
-      console.log("******");
+      // console.log("******". draggedTask.dayDate);
       // Add task to the respective day
       const { task } = draggedTask;
       const newTasksForDay = [...(calendarTasks[dateKey] || []), task];
@@ -182,6 +187,7 @@ const Calendar = () => {
       if (!calendarTasks[dateKey]) {
         calendarTasks[dateKey] = [];
       }
+      
       setCalendarTasks({
         ...calendarTasks,
         [dateKey]: [...calendarTasks[dateKey], task]
@@ -250,14 +256,15 @@ const Calendar = () => {
                   {(calendarTasks[generateDateKey(day.date)] || []).map((task, i) => (
                       <div
                         key={i}
-                        className="dropped-task"
                         draggable
                         onDragStart={(e) => onDragStart(e, task, day.date)}
                         onDrop={(e) => onDrop(e, day.date, i)}
                         onDragOver={allowDrop}
+                        onClick={(e) => toggleTaskCompletion(e, task, generateDateKey(day.date))} // Add click handler
+                        className={`dropped-task ${task.complete ? 'complete' : ''}`}
                       >
                         {task}
-                      </div>
+                      </div >
                     ))}
                   {/* This div acts as a drop target for adding tasks to the bottom of the list */}
                   <div
