@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar.jsx"
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Page1 from "./pages/Page1.jsx"
 import Page2 from "./pages/Page2.jsx"
+import Checkbox from './components/Checkbox';
 
 import React, { useState } from 'react';
 import './App.css';
@@ -13,9 +14,32 @@ const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
+  const [complete, setComplete] = useState([
+    { text: 'Task 1', completed: false },
+    { text: 'Task 2', completed: false },
+    { text: 'Task 3', completed: false },
+  ]);
+  const [checkTasks, setCheckTasks] = useState([
+    { checkTask: 'Task 1', completed: false },
+    { checkTask: 'Task 2', completed: false },
+    { checkTask: 'Task 3', completed: false },
+  ]);
   const [calendarTasks, setCalendarTasks] = useState({});
   const [draggedTask, setDraggedTask] = useState(null);
   const [draggedTaskDay, setDraggedTaskDay] = useState(null);
+
+  const [calendarWidth, setCalendarWidth] = useState(50); // in percentage
+
+
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
+  };
+
+  // Store today's date in formatted form for easy comparison
+  const todayFormatted = formatDate(new Date());
 
   const goToToday = () => {
     setCurrentDate(new Date());
@@ -69,9 +93,20 @@ const Calendar = () => {
     setNewTask(e.target.value);
   };
 
+  const toggleTaskCompletion = (task) => {
+    const updatedComplete = complete.map((t) => 
+      t.text === task.text ? { ...t, completed: !t.completed } : t
+    );
+    setComplete(updatedComplete);
+  };
+
+
   const addTask = (e) => {
     e.preventDefault();
     if (newTask.trim() !== "") {
+
+      
+
       setTasks([...tasks, newTask]);
       setNewTask("");
     }
@@ -160,6 +195,28 @@ const Calendar = () => {
     }
   };
 
+  const handleDragDivider = (e) => {
+    e.preventDefault();
+    const newCalendarWidth = (e.clientX / window.innerWidth) * 100;
+    setCalendarWidth(Math.max(20, Math.min(newCalendarWidth, 80))); // Limiting width between 20% and 80%
+  };
+
+  const handleMouseDown = () => {
+    document.addEventListener('mousemove', handleDragDivider);
+    document.addEventListener('mouseup', handleMouseUp);
+  };
+
+  const handleMouseUp = () => {
+    document.removeEventListener('mousemove', handleDragDivider);
+    document.removeEventListener('mouseup', handleMouseUp);
+  };
+
+  const handleCheckboxChange = (checkTask) => {
+    setCheckTasks(checkTasks.map((t) => (t.checkTask === checkTask ? { ...t, completed: !t.completed } : t)));
+  };
+
+  const isToday = (dayDate) => formatDate(dayDate) === todayFormatted;
+
   return (
     <div className="app-container">
       <div className="calendar">
@@ -183,7 +240,7 @@ const Calendar = () => {
             {calendarDays.map((day, index) => (
               <div
                 key={index}
-                className={`calendar-day ${day.isCurrentMonth ? 'current-month' : 'other-month'}`}
+                className={`calendar-day ${day.isCurrentMonth ? 'current-month' : 'other-month'} ${isToday(day.date) ? 'current-day' : ''}`}
                 onDrop={(e) => onDrop(e, day.date, index)}
                 onDragOver={allowDrop}
               >
@@ -224,31 +281,48 @@ const Calendar = () => {
         </div>
       </div>
 
+        {/* Divider */}
+        {/* <div
+        className="divider"
+        onMouseDown={() => {
+          document.addEventListener("mousemove", handleDragDivider);
+          document.addEventListener("mouseup", () => {
+            document.removeEventListener("mousemove", handleDragDivider);
+          });
+        }}
+      /> */}
+
       {/* Task Management Section */}
       <div className="task-section">
       <div className="task-section-header">
-        <h2>Task Manager</h2>
+        <h2>My Tasks</h2>
       </div>
         <form onSubmit={addTask}>
           <input
             type="text"
-            placeholder="Add a new task..."
+            placeholder="Add a new project..."
             value={newTask}
             onChange={handleTaskInput}
           />
           <button type="submit">+</button>
         </form>
-        <ul>
+        <div className="tasks-container">
           {tasks.map((task, index) => (
-            <li
-              key={index}
-              draggable
-              onDragStart={(e) => onDragStart(e, task)}
-            > 
-              {task}
-            </li>
+            <div key={index} className="task-container">
+              <Checkbox
+                isChecked={task.completed}
+                handleCheckboxChange={handleCheckboxChange}
+              />
+              <h1
+                key={index}
+                draggable
+                onDragStart={(e) => onDragStart(e, task)}
+              >
+                {task}
+              </h1>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
     </div>
   );
