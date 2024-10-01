@@ -1,0 +1,46 @@
+:root {
+    --red: #6B0000;
+    --pink: #FFFCFE;
+    --light-pink: #f2eaf0;
+    --transparent: #ffffff00;
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 300;
+    font-style: normal;
+    color: var(--red);
+}
+
+.project-container {
+    display: flex;
+    flex-direction: column;
+    box-shadow: inset 0px 0px 0px 0.5px #6B0000;
+    height: 100vh
+}
+
+.project-header {
+    align-items: center;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.project-tasks {
+    align-items: left;
+}
+
+.input-container {
+    display: flex;
+    height: 100%;
+  }
+  
+  .calendar-day input {
+    display: inline-block;
+    align-self: flex-end;
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 400;
+    font-size: 12px;
+    color:#6B0000;
+    background-color: #ffffff00;
+    width: 90%;
+    flex-grow: 1;
+    padding-left: 10.5px;
+    border: 0px solid #ddd;
+  }
