@@ -2,11 +2,11 @@ import React from 'react';
 import { useState } from 'react';
 import './App.css'
 
-const Task = ({ i, task, project, list, day }) => {
+const Task = ({ i, task, project, day }) => {
     const [taskText, setTaskText] = useState(task);
     const [isComplete, setComplete] = useState(false);
     const [isProject, setProject] = useState(project);
-    const [inList, setInList] = useState(list);
+    const [inList, setInList] = useState(true);
     const [dateKey, setDateKey] = useState(generateDateKey(date));
     const [index, setIndex] = useState(i);
     const childRef = useRed(null);

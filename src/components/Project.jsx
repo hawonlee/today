@@ -4,20 +4,23 @@ import './App.css';
 import Task from './Task.jsx';
 
 const Project = ({ e, i, projectName }) => {
-    const [tasks, setTasks] = useState([]);
+    const [tasks, setTasks] = useState([
+        
+
+    ]);
     const [index, setIndex] = useState(i);
     const [name, projectName] = useState(projectName);
 
     const handleProjectTaskInput = (e, date) => {
-        task = e.target.value;
+        const taskText = e.target.value;
         const dateKey = generateDateKey(date);
-        if (e.key === "Enter" && task.trim() !== "") {
+        if (e.key === "Enter") {
             // Add task to the calendar
             if (!calendarTasks[dateKey]) {
                 calendarTasks[dateKey] = [];
             }
 
-            setCalendarTasks({
+            setTasks({
                 ...calendarTasks,
                 [dateKey]: [...calendarTasks[dateKey], task]
             });

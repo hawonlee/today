@@ -1,7 +1,7 @@
 import './App.css'
 import Checkbox from './components/Checkbox';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 
 const Calendar = () => {
@@ -17,8 +17,10 @@ const Calendar = () => {
   ]);
   const [calendarTasks, setCalendarTasks] = useState({});
   const [draggedTask, setDraggedTask] = useState(null);
+  const [click, setClick] = useState(false);
 
   const [calendarWidth, setCalendarWidth] = useState(50); // in percentage
+  
 
 
   const formatDate = (date) => {
